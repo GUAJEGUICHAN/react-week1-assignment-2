@@ -56,7 +56,8 @@ function render({ tempNumber, numberStack, accStack, accAdded }) {
   }
 
   function handleClickAcc(e) {
-    //연산자 연속 2번 입력 막는 거 구현해보기
+    if (accAdded)
+      return;
     render({
       tempNumber: 0,
       numberStack: [...numberStack, tempNumber],
@@ -65,7 +66,12 @@ function render({ tempNumber, numberStack, accStack, accAdded }) {
     })
   }
   function handleClickResult() {
-    numberStack = [...numberStack, tempNumber];
+    if (accAdded) {
+      accStack.pop();
+    } else {
+      numberStack = [...numberStack, tempNumber];
+    }
+
     render({
       tempNumber: calculater({
         numberStack: numberStack,
@@ -91,7 +97,7 @@ function render({ tempNumber, numberStack, accStack, accAdded }) {
   const element = (
     <div>
       <div>
-        {accAdded ? numberStack : tempNumber}
+        {accAdded ? numberStack[numberStack.length - 1] : tempNumber}
       </div>
       <div>
         {buttonMaker([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], handleClickNumber)}<br />
