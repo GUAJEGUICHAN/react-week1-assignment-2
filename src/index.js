@@ -78,13 +78,13 @@ function render({ tempNumber, numberStack, accStack, accAdded }) {
   }
   function buttonMaker(arr, event) {
     return (
-      <p>
+      <span>
         {arr.map((value) => (
           <button type="button" onClick={event}>
             {value}
           </button>
         ))}
-      </p>
+      </span>
     );
   }
 
@@ -94,7 +94,7 @@ function render({ tempNumber, numberStack, accStack, accAdded }) {
         {accAdded ? numberStack : tempNumber}
       </div>
       <div>
-        {buttonMaker([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], handleClickNumber)}
+        {buttonMaker([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], handleClickNumber)}<br />
         {buttonMaker(['+', '-', '*', '/'], handleClickAcc)}
         {buttonMaker(['='], handleClickResult)}
       </div>
