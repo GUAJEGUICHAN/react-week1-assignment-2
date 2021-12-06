@@ -29,24 +29,16 @@ const operatorFunctions = {
 }
 
 function calculater({ numberStack, accStack }) {
-  console.log("받은 것 numberStack : ", numberStack)
-  console.log("받은 것 accStack : ", accStack)
   if (numberStack.length === 1) {
     return numberStack[0];
-  } else if (accStack.includes('*' || '/')) {
-    for (i = 0; i < accStack.length; i++) {
-      if (['+', '-'].includes(accStack[i])) {
-        console.log("현재 보고있는 acc는 ", accStack[i])
-        continue;
-      };
-      numberStack.splice(i, i + 2, operatorFunctions[accStack[i]](numberStack[i], numberStack[i + 1]));
-      accStack.splice(i, i + 1);
-      return calculater({ numberStack: numberStack, accStack: accStack });
+  }
+  for (i = 0; i < accStack.length; i++) {
+    if (accStack.includes('*' || '/') && !['*', '/'].includes(accStack[i])) {
+      //곱셈 나눗셈이 있는데 현재 계산할 연산자가 곱셈이나 나눗셈이 아니면 넘긴다.
+      continue;
     }
-  } else if (accStack.includes('+' || '-')) {
-    console.log("(+, - 계산 하는 곳 현재 보고 있는 acc는", accStack[0])
-    numberStack.splice(0, 2, operatorFunctions[accStack[0]](numberStack[0], numberStack[1]));
-    accStack.splice(0, 1);
+    numberStack.splice(i, i + 2, operatorFunctions[accStack[i]](numberStack[i], numberStack[i + 1]));
+    accStack.splice(i, i + 1);
     return calculater({ numberStack: numberStack, accStack: accStack });
   }
 }
@@ -54,12 +46,6 @@ function calculater({ numberStack, accStack }) {
 
 
 function render({ tempNumber, numberStack, accStack }) {
-  console.log(tempNumber)
-  console.log("숫자 배열", numberStack);
-  console.log("연산자 배열", accStack)
-
-
-
   function handleClickNumber(e) {
     render({
       tempNumber: tempNumber * 10 + parseInt(e.target.innerText, 10),
