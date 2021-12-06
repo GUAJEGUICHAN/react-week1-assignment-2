@@ -34,7 +34,7 @@ function calculater({ numberStack, accStack }) {
   }
   for (i = 0; i < accStack.length; i++) {
     if (accStack.includes('*' || '/') && !['*', '/'].includes(accStack[i])) {
-      //곱셈 나눗셈이 있는데 현재 계산할 연산자가 곱셈이나 나눗셈이 아니면 넘긴다.
+      //곱셈 나눗셈이 있는데 현재 사용할 연산할가 곱셈이나 나눗셈이 아니면 넘긴다.
       continue;
     }
     numberStack.splice(i, i + 2, operatorFunctions[accStack[i]](numberStack[i], numberStack[i + 1]));
@@ -45,12 +45,13 @@ function calculater({ numberStack, accStack }) {
 
 
 
-function render({ tempNumber, numberStack, accStack }) {
+function render({ tempNumber, numberStack, accStack, accAdded }) {
   function handleClickNumber(e) {
     render({
       tempNumber: tempNumber * 10 + parseInt(e.target.innerText, 10),
       numberStack: numberStack,
-      accStack: accStack
+      accStack: accStack,
+      accAdded: false
     })
   }
 
@@ -59,7 +60,8 @@ function render({ tempNumber, numberStack, accStack }) {
     render({
       tempNumber: 0,
       numberStack: [...numberStack, tempNumber],
-      accStack: [...accStack, e.target.innerText]
+      accStack: [...accStack, e.target.innerText],
+      accAdded: true
     })
   }
   function handleClickResult() {
@@ -70,7 +72,8 @@ function render({ tempNumber, numberStack, accStack }) {
         accStack: accStack
       }),
       numberStack: [],
-      accStack: []
+      accStack: [],
+      accAdded: false,
     })
   }
   function buttonMaker(arr, event) {
@@ -88,7 +91,7 @@ function render({ tempNumber, numberStack, accStack }) {
   const element = (
     <div>
       <div>
-        {0}
+        {accAdded ? numberStack : tempNumber}
       </div>
       <div>
         {buttonMaker([1, 2, 3, 4, 5, 6, 7, 8, 9, 0], handleClickNumber)}
@@ -105,5 +108,6 @@ function render({ tempNumber, numberStack, accStack }) {
 render({
   tempNumber: 0,
   numberStack: [],
-  accStack: []
+  accStack: [],
+  accAdded: false
 });
