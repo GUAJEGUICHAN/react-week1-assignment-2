@@ -33,14 +33,25 @@ function calculater({ numberStack, accStack }) {
   console.log("받은 것 accStack : ", accStack)
   if (numberStack.length === 1) {
     return numberStack[0];
-  } else {
+  } else if (accStack.includes('*' || '/')) {
     for (i = 0; i < accStack.length; i++) {
-      numberStack.splice(0, 2, operatorFunctions[accStack[i]](numberStack[i], numberStack[i + 1]));
-      accStack.splice(0, 1)
-      return calculater({ numberStack: numberStack, accStack: accStack })
+      if (['+', '-'].includes(accStack[i])) {
+        console.log("현재 보고있는 acc는 ", accStack[i])
+        continue;
+      };
+      numberStack.splice(i, i + 2, operatorFunctions[accStack[i]](numberStack[i], numberStack[i + 1]));
+      accStack.splice(i, i + 1);
+      return calculater({ numberStack: numberStack, accStack: accStack });
     }
+  } else if (accStack.includes('+' || '-')) {
+    console.log("(+, - 계산 하는 곳 현재 보고 있는 acc는", accStack[0])
+    numberStack.splice(0, 2, operatorFunctions[accStack[0]](numberStack[0], numberStack[1]));
+    accStack.splice(0, 1);
+    return calculater({ numberStack: numberStack, accStack: accStack });
   }
 }
+
+
 
 function render({ tempNumber, numberStack, accStack }) {
   console.log(tempNumber)
